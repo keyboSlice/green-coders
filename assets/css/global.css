@@ -352,6 +352,10 @@ h6 {
     font-family: 'Amatic SC', cursive;
 }
 
+a {
+    text-decoration: none;
+}
+
 p,
 a {
     margin: 0;

@@ -12,7 +12,6 @@
       <v-flex 
         class="drawer__plant-wrapper"
         align-center
-        reverse
         justify-center>
         <v-avatar
           :size="128">
@@ -20,6 +19,25 @@
         </v-avatar>
         <h1 class="drawer__plant-title">{{ activePlant.name }}</h1>
         <p class="drawer__plant-subtitle">Clinging on to life... no thanks to you</p>
+        <p>List of things for you to try and stave off the inevitable onset of death:</p>
+        <v-list>
+          <v-list-tile 
+            to="temperature" 
+            nuxt>
+            <v-list-tile-avatar>
+              🌡️
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title><p>Temperature</p></v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon>
+                <v-icon color="grey lighten-1">info</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-divider inset />
+        </v-list>
       </v-flex>
     </v-navigation-drawer>
     <nuxt />
