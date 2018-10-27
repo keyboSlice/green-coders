@@ -1,13 +1,31 @@
 <template>
   <v-container class="app-background">
     <v-card class="app-intro">
-      <h1><strong>PAPP</strong><br>The passive aggressive potted plant</h1>
+      <h1><strong>🌿 PPAPP 🌿</strong><br>Penelope the passive aggressive potted plant</h1>
+      <p>List of plants for you to neglect:</p> 
     </v-card>
+    <v-card
+      v-for="plant in plants"
+      :key="plant.id"
+      class="plant-card"
+      @click.native="$store.dispatch('setActivePlant', plant.id)">    
+      <v-avatar :size="96">
+        <img :src="plant.image">
+      </v-avatar>
+      <h2>{{ plant.name }}</h2>
+      <p>Click on me and maybe I'll survive longer than your last house plant - or don't, whatever.</p>
+    </v-card>
+    <v-footer><small>Photo by <a href="https://unsplash.com/@mensroom">Mike Marquez</a> on Unsplash</small></v-footer>
   </v-container>
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+export default {
+    computed: {
+        ...mapState(['plants'])
+    }
+}
 </script>
 
 <style lang="scss">
@@ -18,7 +36,7 @@ export default {}
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     position: relative;
 
     &::after {
@@ -39,12 +57,28 @@ export default {}
 }
 
 .app-intro {
-    font-family: 'Amatic SC', cursive;
     text-align: center;
-    font-weight: normal !important;
+    h1 {
+        font-weight: normal !important;
+        padding: 0 1rem;
 
-    strong {
-        font-weight: bold;
+        strong {
+            font-weight: bold;
+        }
     }
+    p {
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+}
+
+.plant-card {
+    padding: 1rem;
+    text-align: center;
+}
+
+.v-footer small {
+    width: 100%;
+    text-align: center;
 }
 </style>

@@ -25,7 +25,7 @@ module.exports = {
             {
                 rel: 'stylesheet',
                 href:
-                    'https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Josefin+Slab:400,600'
+                    'https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Josefin+Slab:400,600|Material+Icons'
             }
         ]
     },
@@ -38,7 +38,7 @@ module.exports = {
     /*
   ** Global CSS
   */
-    css: ['~/assets/style/app.styl'],
+    css: ['~/assets/style/app.styl', '~/assets/css/global.css'],
 
     /*
   ** Plugins to load before mounting the App
