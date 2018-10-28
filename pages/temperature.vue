@@ -20,28 +20,43 @@
       class="temperature__progress">
       <p class="temperature__progress-emoji">{{ temperatureEmoji }}</p>
     </v-progress-circular>
+    <v-flex v-if="temperatureKey === 'hot'">
+      <h2>{{ fanMessage }}</h2>
+      <v-btn 
+        :disabled="fanState"
+        class="temperature__fan-btn"
+        block 
+        color="warning"
+        @click="fanState = true"><p>{{ fanButtonText }}</p></v-btn>
+      <v-progress-linear
+        v-if="fanState"
+        :value="fanProgress"
+        color="success"
+        height="5"
+      />
+    </v-flex>
   </v-container>
 </template>
 
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import { tween } from 'shifty'
 
 export default {
-    async asyncData() {
-        const { data } = await axios.get(
-            'https://penelope-plant-api.herokuapp.com/getlatest/temperature'
-        )
-
-        return { temperature: data.temperature }
-    },
+    // async asyncData() {
+    //     const { data } = await axios.get(
+    //         'https://penelope-plant-api.herokuapp.com/latest/temperature'
+    //     )
+    //     return { temperature: data.temperature }
+    // },
     data() {
         return {
             thresholds: {
                 cold: 15,
                 ambient: 25
             },
-            temperature: 28,
+            temperature: 32,
             temperatureEmojis: {
                 cold: '❄️',
                 ambient: '☺️',
@@ -56,7 +71,9 @@ export default {
                 cold: `Hey, don't worry about it, I like slowly freezing to death`,
                 ambient: 'Wow, you got something right for once 👍',
                 hot: `Too hot, dummy, I'm not a fuckin' cactus`
-            }
+            },
+            fanState: false,
+            fanProgress: 0
         }
     },
     computed: {
@@ -79,6 +96,33 @@ export default {
         },
         temperaturePercentage() {
             return (this.temperature / 40) * 100
+        },
+        fanMessage() {
+            return this.fanState
+                ? 'Wow - better late than never to start giving a crap I suppose'
+                : `You probably don't care, but if there's any decency left in you then maybe click the button below and turn my fan on for a minute?`
+        },
+        fanButtonText() {
+            return this.fanState ? 'Fan running' : 'Switch fan on'
+        }
+    },
+    watch: {
+        fanState(newState) {
+            if (newState) {
+                tween({
+                    from: { progress: 0 },
+                    to: { progress: 100 },
+                    duration: 30000,
+                    step: state => (this.fanProgress = state.progress)
+                })
+            } else {
+                this.fanProgress = 0
+            }
+        },
+        fanProgress(newState) {
+            if (newState === 100) {
+                this.fanState = false
+            }
         }
     },
     beforeMount() {
@@ -101,5 +145,10 @@ export default {
 .temperature__progress-emoji {
     font-size: 48px;
     margin-top: 15px;
+}
+
+.temperature__fan-btn {
+    font-weight: bold;
+    margin: 2rem 0;
 }
 </style>

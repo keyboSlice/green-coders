@@ -20,7 +20,7 @@
         <h1 class="drawer__plant-title">{{ activePlant.name }}</h1>
         <p class="drawer__plant-subtitle">Clinging on to life... no thanks to you</p>
         <p>List of things for you to try and stave off the inevitable onset of death:</p>
-        <v-list>
+        <v-list class="drawer__item-list">
           <v-list-tile 
             to="temperature" 
             nuxt>
@@ -102,5 +102,9 @@ export default {
 
 .drawer__plant-subtitle {
     font-style: italic;
+}
+
+.drawer__item-list > div {
+    padding: 0.5rem 0;
 }
 </style>

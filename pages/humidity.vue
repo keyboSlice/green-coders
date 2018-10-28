@@ -29,11 +29,13 @@ import axios from 'axios'
 
 export default {
     async asyncData() {
-        const { data } = await axios.get(
-            `https://penelope-plant-api.herokuapp.com/getlatest/humidity`
-        )
+        // const { data } = await axios.get(
+        //     `https://penelope-plant-api.herokuapp.com/latest/humidity`
+        // )
 
-        return { humidity: data.humidity }
+        // return { humidity: parseInt(data, 10) }
+
+        return { humidity: 42 }
     },
     data() {
         return {
