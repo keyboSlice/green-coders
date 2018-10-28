@@ -41,7 +41,7 @@
     </transition>
     <transition name="fade">
       <div v-if="!loaded">
-        <h1>Finding out just what a neglectful POS you are..</h1>
+        <h1>Asking {{ activePlant.name }} just how much of a neglectful POS you are..</h1>
         <v-progress-linear 
           indeterminate 
           color="red" />
