@@ -117,6 +117,8 @@ export default {
     watch: {
         fanState(newState) {
             if (newState) {
+                axios.get(`https://penelope-plant-api.herokuapp.com/fan`)
+
                 tween({
                     from: { progress: 0 },
                     to: { progress: 100 },
