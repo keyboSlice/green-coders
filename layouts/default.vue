@@ -37,6 +37,21 @@
             </v-list-tile-action>
           </v-list-tile>
           <v-list-tile 
+            to="humidity" 
+            nuxt>
+            <v-list-tile-avatar>
+              💦
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title><p>Humidity</p></v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon>
+                <v-icon color="grey lighten-1">info</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-list-tile 
             to="/" 
             nuxt>
             <v-list-tile-avatar>

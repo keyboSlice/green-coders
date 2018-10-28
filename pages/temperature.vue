@@ -24,9 +24,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 
 export default {
+    async asyncData() {
+        const { data } = await axios.get(
+            'https://penelope-plant-api.herokuapp.com/getlatest/temperature'
+        )
+
+        return { temperature: data.temperature }
+    },
     data() {
         return {
             thresholds: {
@@ -72,6 +80,9 @@ export default {
         temperaturePercentage() {
             return (this.temperature / 40) * 100
         }
+    },
+    beforeMount() {
+        this.$store.commit('toggleDrawer', false)
     }
 }
 </script>

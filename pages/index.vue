@@ -1,7 +1,7 @@
 <template>
   <v-container class="app-background">
     <v-card class="app-intro">
-      <h1><strong>🌿 PPAPP 🌿</strong><br>Penelope the passive aggressive potted plant</h1>
+      <h1><strong>🌿 PAPP 🌿</strong><br>Passive aggressive potted plant</h1>
       <p>List of plants for you to neglect:</p> 
     </v-card>
     <v-card
@@ -24,6 +24,9 @@ import { mapState } from 'vuex'
 export default {
     computed: {
         ...mapState(['plants'])
+    },
+    beforeMount() {
+        this.$store.commit('toggleDrawer', false)
     }
 }
 </script>
