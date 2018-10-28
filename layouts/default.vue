@@ -1,5 +1,21 @@
 <template>
   <v-app>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="8000"
+      class="snacky-boy"
+      multi-line
+      top
+    >
+      <p>Message sent - bad company is better than no company, right?</p>
+      <v-btn
+        color="green"
+        flat
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
     <v-navigation-drawer
       :value="drawer"
       absolute
@@ -66,6 +82,19 @@
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
+          <v-list-tile @click="sendRandom">
+            <v-list-tile-avatar>
+              🔀
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title><p>Random message</p></v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon>
+                <v-icon color="grey lighten-1">info</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
           <v-divider inset />
         </v-list>
       </v-flex>
@@ -75,12 +104,24 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
+    data() {
+        return {
+            snackbar: false
+        }
+    },
     computed: {
         ...mapState(['drawer']),
         ...mapGetters(['activePlant'])
+    },
+    methods: {
+        sendRandom() {
+            axios.get('https://penelope-plant-api.herokuapp.com/random')
+            this.snackbar = true
+        }
     }
 }
 </script>
