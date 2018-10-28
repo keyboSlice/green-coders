@@ -56,129 +56,129 @@ import { mapGetters } from 'vuex'
 import { tween } from 'shifty'
 
 export default {
-  data() {
-    return {
-      thresholds: {
-        cold: 15,
-        ambient: 25
-      },
-      temperaturePoll: null,
-      temperature: 0,
-      temperatureEmojis: {
-        cold: '❄️',
-        ambient: '☺️',
-        hot: '🔥'
-      },
-      temperatureColours: {
-        cold: '#2fcdfa',
-        ambient: '#11c16b',
-        hot: '#da3e17'
-      },
-      temperatureMessages: {
-        cold: `Hey, don't worry about it, I like slowly freezing to death`,
-        ambient: 'Wow, you got something right for once 👍',
-        hot: `Too hot, dummy, I'm not a fuckin' cactus`
-      },
-      fanState: false,
-      fanProgress: 0,
-      loaded: false
-    }
-  },
-  computed: {
-    ...mapGetters(['activePlant']),
-    temperatureKey() {
-      return this.temperature < this.thresholds.cold
-        ? 'cold'
-        : this.temperature < this.thresholds.ambient
-          ? 'ambient'
-          : 'hot'
+    data() {
+        return {
+            thresholds: {
+                cold: 15,
+                ambient: 23
+            },
+            temperaturePoll: null,
+            temperature: 0,
+            temperatureEmojis: {
+                cold: '❄️',
+                ambient: '☺️',
+                hot: '🔥'
+            },
+            temperatureColours: {
+                cold: '#2fcdfa',
+                ambient: '#11c16b',
+                hot: '#da3e17'
+            },
+            temperatureMessages: {
+                cold: `Hey, don't worry about it, I like slowly freezing to death`,
+                ambient: 'Wow, you got something right for once 👍',
+                hot: `Too hot, dummy, I'm not a fuckin' cactus`
+            },
+            fanState: false,
+            fanProgress: 0,
+            loaded: false
+        }
     },
-    temperatureEmoji() {
-      return this.temperatureEmojis[this.temperatureKey]
+    computed: {
+        ...mapGetters(['activePlant']),
+        temperatureKey() {
+            return this.temperature < this.thresholds.cold
+                ? 'cold'
+                : this.temperature < this.thresholds.ambient
+                    ? 'ambient'
+                    : 'hot'
+        },
+        temperatureEmoji() {
+            return this.temperatureEmojis[this.temperatureKey]
+        },
+        temperatureMessage() {
+            return this.temperatureMessages[this.temperatureKey]
+        },
+        temperatureColour() {
+            return this.temperatureColours[this.temperatureKey]
+        },
+        temperaturePercentage() {
+            return (this.temperature / 40) * 100
+        },
+        fanMessage() {
+            return this.fanState
+                ? 'Wow - better late than never to start giving a crap I suppose'
+                : `You probably don't care, but if there's any decency left in you then maybe click the button below and turn my fan on for a minute?`
+        },
+        fanButtonText() {
+            return this.fanState ? 'Fan running' : 'Switch fan on'
+        }
     },
-    temperatureMessage() {
-      return this.temperatureMessages[this.temperatureKey]
+    watch: {
+        fanState(newState) {
+            if (newState) {
+                tween({
+                    from: { progress: 0 },
+                    to: { progress: 100 },
+                    duration: 30000,
+                    step: state => (this.fanProgress = state.progress)
+                })
+            } else {
+                this.fanProgress = 0
+            }
+        },
+        fanProgress(newState) {
+            if (newState === 100) {
+                this.fanState = false
+            }
+        }
     },
-    temperatureColour() {
-      return this.temperatureColours[this.temperatureKey]
+    beforeMount() {
+        this.$store.commit('toggleDrawer', false)
     },
-    temperaturePercentage() {
-      return (this.temperature / 40) * 100
-    },
-    fanMessage() {
-      return this.fanState
-        ? 'Wow - better late than never to start giving a crap I suppose'
-        : `You probably don't care, but if there's any decency left in you then maybe click the button below and turn my fan on for a minute?`
-    },
-    fanButtonText() {
-      return this.fanState ? 'Fan running' : 'Switch fan on'
-    }
-  },
-  watch: {
-    fanState(newState) {
-      if (newState) {
-        tween({
-          from: { progress: 0 },
-          to: { progress: 100 },
-          duration: 30000,
-          step: state => (this.fanProgress = state.progress)
-        })
-      } else {
-        this.fanProgress = 0
-      }
-    },
-    fanProgress(newState) {
-      if (newState === 100) {
-        this.fanState = false
-      }
-    }
-  },
-  beforeMount() {
-    this.$store.commit('toggleDrawer', false)
-  },
-  mounted() {
-    this.temperaturePoll = setInterval(async () => {
-      const { data } = await axios.get(
-        'https://penelope-plant-api.herokuapp.com/latest/temperature'
-      )
+    mounted() {
+        this.temperaturePoll = setInterval(async () => {
+            const { data } = await axios.get(
+                'https://penelope-plant-api.herokuapp.com/latest/temperature'
+            )
 
-      this.temperature = parseInt(data, 10)
-      this.loaded = true
-    }, 3000)
-  },
-  beforeDestroy() {
-    clearInterval(this.temperaturePoll)
-    this.temperaturePoll = null
-  }
+            this.temperature = parseInt(data, 10)
+            this.loaded = true
+        }, 3000)
+    },
+    beforeDestroy() {
+        clearInterval(this.temperaturePoll)
+        this.temperaturePoll = null
+    }
 }
 </script>
 
 <style lang="scss">
 .temperature {
-  text-align: center;
+    text-align: center;
 }
 
 .temperature__progress {
-  width: 128px;
-  height: 128px;
-  margin: 2rem 0;
+    width: 128px;
+    height: 128px;
+    margin: 2rem 0;
 }
 
 .temperature__progress-emoji {
-  font-size: 48px;
-  margin-top: 15px;
+    font-size: 48px;
+    margin-top: 15px;
 }
 
 .temperature__fan-btn {
-  font-weight: bold;
-  margin: 2rem 0;
+    font-weight: bold;
+    margin: 2rem 0;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+    transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+    opacity: 0;
 }
 </style>
