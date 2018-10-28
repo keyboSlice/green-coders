@@ -144,9 +144,10 @@ export default {
 
       this.temperature = parseInt(data, 10)
       this.loaded = true
-    }, 10000)
+    }, 3000)
   },
   beforeDestroy() {
+    clearInterval(this.temperaturePoll)
     this.temperaturePoll = null
   }
 }
