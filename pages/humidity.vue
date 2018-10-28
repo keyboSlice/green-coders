@@ -92,7 +92,7 @@ export default {
         'https://penelope-plant-api.herokuapp.com/latest/humidity'
       )
 
-      this.temperature = parseInt(data, 10)
+      this.humidity = parseInt(data, 10)
       this.loaded = true
     }, 3000)
   },
